@@ -31,19 +31,23 @@ DeepSeek Harness（DSH）番茄钟插件：经典 25/5/15 计时，可关联当�
 
 ## 安装
 
-npm 包名 `@yongfanbeta/dsh-pomodoro`（插件 id / bundle 行名 / npm 名三者必须一致）。
+> ⚠️ npm 包 `@yongfanbeta/dsh-pomodoro` **尚未发布到 npmjs**，所以下面的"方式 A"暂时不可用；现在请用"方式 B 从源码装"。发布后本节会更新。
 
-**方式 A · 官方 CLI（推荐）**
+**方式 A · 官方 CLI（npm 发布后可用）**
 
 ```powershell
-dsh plugin --profile web add @yongfanbeta/dsh-pomodoro
-dsh web   # 或重启桌面端 profile
+# 桌面端（desktop profile）
+dsh plugin --profile desktop add @yongfanbeta/dsh-pomodoro
 ```
 
-**方式 B · 从源码装**
+Web 端把 `--profile desktop` 换成 `--profile web`，再 `dsh web`。
+
+**方式 B · 从源码装（现在就能用）**
+
+在插件目录里执行对应平台的脚本：
 
 ```powershell
-# Windows
+# Windows（含桌面端）
 pwsh -File scripts/install.ps1
 ```
 
@@ -52,11 +56,11 @@ pwsh -File scripts/install.ps1
 bash scripts/install.sh
 ```
 
-脚本会自动定位**正在运行的 profile**、把插件复制进 `node_modules`、登记 bundle 与 dependency。重启 DSH 后左侧栏出现 🍅 即生效。
+脚本会**自动定位你正在运行的 profile**（桌面端即 `desktop`），把插件复制进该 profile 的 `node_modules`、登记 bundle 与 dependency。重启 DSH 后左侧栏出现 🍅 即生效。想显式指定：`pwsh -File scripts/install.ps1 -Profile desktop`。
 
-> ⚠️ **装错 profile 是"装了却看不见"的头号原因**：只有正在运行的那个 profile 会加载插件。请在 DSH 会话内跑脚本，或先确认 `$env:DSH_PROFILE`；装完用 `npm run check:install` 复核（它会打印实际校验的 profile 名）。
+> ⚠️ **装错 profile 是"装了却看不见"的头号原因**：只有正在运行的那个 profile 会加载插件。请在 DSH 会话内跑脚本（脚本会读 `$env:DSH_PROFILE` 自动选对），或先确认 `$env:DSH_PROFILE`；装完用 `npm run check:install` 复核（它会打印实际校验的 profile 名）。
 
-卸载：`dsh plugin --profile web remove @yongfanbeta/dsh-pomodoro`，或 `pwsh -File scripts/install.ps1 -Uninstall` / `bash scripts/install.sh --uninstall`。数据文件会保留。
+卸载：`pwsh -File scripts/install.ps1 -Uninstall` / `bash scripts/install.sh --uninstall`；npm 发布后也可 `dsh plugin --profile desktop remove @yongfanbeta/dsh-pomodoro`。数据文件会保留。
 
 ## 使用
 
@@ -80,7 +84,6 @@ bash scripts/install.sh
 ## 更多
 
 - 想看**设计与实现细节**（进程边界、中断记账、挂载点、自检脚本、npm 发布流程、二次开发），见 [CONTRIBUTING.md](CONTRIBUTING.md)。
-- 想读**这次是怎么"用嘴"做出来的**，见 [一行代码不写-复现DSH番茄钟.md](一行代码不写-复现DSH番茄钟.md)。
 - 版本变更见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 许可证
