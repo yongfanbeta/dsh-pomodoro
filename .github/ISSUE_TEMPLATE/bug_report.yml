@@ -1,0 +1,82 @@
+name: Bug report
+description: Report something that is not working as expected
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! This is a **third-party
+        plugin for DeepSeek Harness (DSH)** — please make sure the problem is in
+        the plugin and not in DSH itself before reporting here.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: The timer did not resume after refreshing the page...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we see it happen ourselves?
+      value: |
+        1. Open ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: OS
+      options: [Windows, macOS, Linux, Other]
+    validations:
+      required: true
+
+  - type: input
+    id: dsh-surface
+    attributes:
+      label: DSH surface
+      description: Desktop app, `dsh web`, or other? Which version?
+      placeholder: desktop / web, DSH 0.x.x
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: e.g. v0.1.0 or a git commit
+    validations:
+      required: true
+
+  - type: textarea
+    id: profile-check
+    attributes:
+      label: Install sanity
+      description: "Run `npm run check:install` in the plugin folder and paste the output — most 'installed but I see nothing' reports are a wrong-profile install."
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs / screenshots
+      description: Browser console errors, DSH host logs, or the corrupt-state filename.
+      render: shell
+    validations:
+      required: false

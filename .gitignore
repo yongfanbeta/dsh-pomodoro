@@ -1,0 +1,51 @@
+# --- dependencies -----------------------------------------------------------
+# The plugin has zero runtime deps, but installs/copies can still drop one here.
+node_modules/
+.pnpm-store/
+
+# --- local runtime data -----------------------------------------------------
+# Never commit a real pomodoro log. The plugin writes to ${DSH_HOME:-~/.dsh}/
+# storages/pomodoro/, but guard against anyone pointing it at a repo-relative
+# path or dropping an export/backup here while hacking.
+storages/
+*.state.json
+state.json
+state.json.corrupt-*
+
+# CSV exports (the plugin's own "export" output).
+*.csv
+
+# --- node / tooling ---------------------------------------------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.tsbuildinfo
+.npm/
+.eslintcache
+.cache/
+coverage/
+.nyc_output/
+
+# --- env / secrets ----------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.local
+
+# --- editors / OS -----------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini

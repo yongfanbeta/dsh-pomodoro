@@ -1,0 +1,22 @@
+# Normalize line endings so a cross-platform repo does not churn diffs.
+# Text defaults to LF in the repo; check out according to core.autocrlf.
+
+* text=auto eol=lf
+
+# POSIX installer must keep LF endings or bash chokes on \r.
+*.sh  text eol=lf
+
+# PowerShell script + the cordis patch are text too.
+*.ps1 text
+*.yml text
+
+# Real binary assets (screenshots) should never be line-ending mangled.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.svg text
+
+# Collapse lockfile noise in PR diffs.
+package-lock.json -diff linguist-generated=true

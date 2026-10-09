@@ -1,0 +1,62 @@
+{
+  "name": "dsh-pomodoro",
+  "version": "0.1.0",
+  "description": "DSH 番茄钟插件：25/5/15 经典计时，可关联当前会话任务或手输项目名，内置独立统计面板（今日/本周/项目维度），数据本地持久化并支持导出 CSV（Excel 可直接打开）。",
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "pomodoro",
+    "timer",
+    "productivity",
+    "statistics"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test --experimental-test-isolation=none test/core.test.js test/store.test.js test/host.test.js test/client.test.js",
+    "install:plugin": "pwsh -File scripts/install.ps1",
+    "check:install": "node scripts/check-install.mjs",
+    "check:cordis": "node scripts/verify-cordis-load.mjs"
+  },
+  "license": "MIT",
+  "author": "yongfanbeta",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yongfanbeta/dsh-pomodoro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yongfanbeta/dsh-pomodoro/issues"
+  },
+  "homepage": "https://github.com/yongfanbeta/dsh-pomodoro#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "react": "^18.2.0"
+  }
+}

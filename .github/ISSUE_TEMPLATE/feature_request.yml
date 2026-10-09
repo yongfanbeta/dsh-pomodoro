@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest an idea for this plugin
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas welcome! Keep in mind the plugin's design tradeoffs (clock lives in
+        the browser half, data is a single global JSON log, zero runtime deps).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem you want to solve
+      description: What is hard or annoying today? A concrete scenario beats a vague wish.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: The solution you have in mind
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
