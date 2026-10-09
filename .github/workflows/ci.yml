@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   test:
-    name: Test (Node ${{ matrix.node }} · ${{ matrix.os }})
+    name: Test (Node ${{ matrix.node }} / ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -29,7 +29,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Run test suite
-        # The plugin has zero runtime dependencies, so `npm ci`/`npm install`
+        # The plugin has zero runtime dependencies, so `npm ci` / `npm install`
         # is not required; tests run straight off the source tree.
         run: npm test
 
@@ -47,7 +47,9 @@ jobs:
           node-version: '22'
 
       - name: Validate package.json
-        run: node -e "JSON.parse(require('fs').readFileSync('package.json','utf8')); console.log('package.json is valid JSON')"
+        run: |
+          node -e "const p = JSON.parse(require('fs').readFileSync('package.json', 'utf8')); if (!p.name || !p.version) throw new Error('missing name or version')"
 
       - name: Host half imports and exposes the plugin contract
-        run: node --input-type=module -e "import('./lib/index.js').then(m => { for (const k of ['name','apply','inject']) if (!(k in m)) throw new Error('missing export: '+k); console.log('host contract ok:', m.name); })"
+        run: |
+          node --input-type=module -e "import('./lib/index.js').then(m => { for (const k of ['name', 'apply', 'inject']) { if (!(k in m)) throw new Error('missing export ' + k) } console.log('host contract ok ' + m.name) })"
