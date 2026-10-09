@@ -21,7 +21,7 @@ DeepSeek Harness 番茄钟插件：经典 25/5/15 计时，可关联当前会话
 这是 DSH 的插件，不是独立应用。装它之前你需要：
 
 1. **已安装 DSH（DeepSeek Harness）并至少成功运行过一次**——插件是往 DSH 的 profile 里注册的，DSH 没跑过就没有可写入的 profile。
-2. **Node.js ≥ 20**（跑测试 / 安装脚本的 JSON 处理用）。
+2. **Node.js `^22` 或 `>=24`**（跑测试 / 安装脚本的 JSON 处理用；与官方 DSH 基线一致）。
 3. 平台：
    - **Windows**：自带 `pwsh`，直接用 `scripts/install.ps1`。
    - **macOS / Linux**：用 `scripts/install.sh`（只需 `bash` + `node`，不依赖 PowerShell），或按下面的手动方式安装。
@@ -283,12 +283,14 @@ test/               105 项测试
 ## 开发
 
 ```powershell
-# 全部测试（Node 24；沙箱内需要 --experimental-test-isolation=none）
+# 普通终端 / CI：全部测试（Node 原生并行跑多文件）
 npm test
 
-# 等价于：
-node --test --experimental-test-isolation=none test/core.test.js test/store.test.js test/host.test.js test/client.test.js
+# DSH 会话内（沙箱不允许 spawn 子进程，需切到单进程隔离）：
+npm run test:sandbox
 ```
+
+两个命令等价，只是 `test:sandbox` 会加 `--experimental-test-isolation=none`——因为在 DSH 里 pwsh 是沙箱化的、node 不能 fork。你在 DSH 会话里做二次开发就用后者，普通终端和 GitHub Actions 就用前者。
 
 测试分四层，共 105 项：
 

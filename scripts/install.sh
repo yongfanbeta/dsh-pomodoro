@@ -13,8 +13,8 @@
 #   bash scripts/install.sh -Profile web  # force a profile name
 #   bash scripts/install.sh --uninstall   # remove instead
 #
-# Requires: bash, node (>=20). JSON editing is delegated to node so it works
-# identically wherever jq is absent.
+# Requires: bash, node (^22 or >=24, matching DSH itself). JSON editing is
+# delegated to node so it works identically wherever jq is absent.
 
 set -euo pipefail
 

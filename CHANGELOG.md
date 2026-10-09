@@ -23,7 +23,7 @@ First public release.
 - **Installers** — `scripts/install.ps1` (Windows) and `scripts/install.sh` (macOS / Linux), both auto-detecting the running profile and registering bundle + dependency.
 - **Verification scripts** — `check:install` (loader-contract + byte-for-byte source consistency) and `check:cordis` (mounts the host half under real Cordis).
 - **Test suite** — 105 tests across four layers (core / store / host / client), the client layer actually evaluating and mounting the prebuilt client bundle through a mini-React harness.
-- **CI** — GitHub Actions matrix (Ubuntu / Windows / macOS × Node 20 / 22) plus a package-sanity job.
+- **CI** — GitHub Actions matrix (Ubuntu / Windows / macOS × Node 22 / 24) plus a package-sanity job.
 
 ### Known limitations
 

@@ -10,7 +10,9 @@ boundary or the record/status accounting.
 ## Test plan
 
 - [ ] `npm test` passes locally (should be green — CI runs 105 tests on
-      Ubuntu / Windows / macOS × Node 20 / 22).
+      Ubuntu / Windows / macOS × Node 22 / 24). Inside a DSH session use
+      `npm run test:sandbox` instead — the sandbox rejects `spawn`, so node
+      needs `--experimental-test-isolation=none`.
 - [ ] If you changed `lib/index.js` or `lib/core/**`: note that the host half
       is loaded at boot, so reviewers need a full DSH restart, not just a page
       refresh, to see it.
