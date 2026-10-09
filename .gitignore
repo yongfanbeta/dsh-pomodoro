@@ -49,3 +49,10 @@ coverage/
 Thumbs.db
 ehthumbs.db
 desktop.ini
+
+# --- DSH session transcripts ------------------------------------------------
+# Never commit a session's JSONL log: it contains the full conversation, tool
+# calls, and (frequently) absolute paths from the local machine. These files
+# can easily weigh tens of MB.
+*.jsonl
+.pomo_dev.jsonl

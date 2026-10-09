@@ -224,7 +224,7 @@ export function createClientHarness(options = {}) {
 
   /** Evaluate the bundle and return the plugin object it registered. */
   function loadBundle() {
-    const definition = registrations[registrations.length - 1] ?? modules.get('dsh-pomodoro')
+    const definition = registrations[registrations.length - 1] ?? modules.get('@yongfanbeta/dsh-pomodoro')
     if (definition === undefined) throw new Error('bundle did not call __ModuleLoader__.load')
     const require = (spec) => {
       if (spec === 'react') return mini.React

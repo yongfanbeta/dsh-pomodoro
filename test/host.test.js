@@ -128,7 +128,7 @@ function recordPayload(overrides = {}) {
 }
 
 test('plugin exports the identity the loader patch expects', () => {
-  assert.equal(name, 'dsh-pomodoro')
+  assert.equal(name, '@yongfanbeta/dsh-pomodoro')
   assert.ok(Array.isArray(inject) && inject.includes('webServer'))
 })
 

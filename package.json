@@ -1,5 +1,5 @@
 {
-  "name": "dsh-pomodoro",
+  "name": "@yongfanbeta/dsh-pomodoro",
   "version": "0.1.0",
   "description": "DSH 番茄钟插件：25/5/15 经典计时，可关联当前会话任务或手输项目名，内置独立统计面板（今日/本周/项目维度），数据本地持久化并支持导出 CSV（Excel 可直接打开）。",
   "keywords": [
@@ -29,9 +29,13 @@
     "test": "node --test --experimental-test-isolation=none test/core.test.js test/store.test.js test/host.test.js test/client.test.js",
     "install:plugin": "pwsh -File scripts/install.ps1",
     "check:install": "node scripts/check-install.mjs",
-    "check:cordis": "node scripts/verify-cordis-load.mjs"
+    "check:cordis": "node scripts/verify-cordis-load.mjs",
+    "prepublishOnly": "npm test"
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "yongfanbeta",
   "repository": {
     "type": "git",

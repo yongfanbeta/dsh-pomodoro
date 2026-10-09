@@ -15,7 +15,7 @@ import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
-const PLUGIN = 'dsh-pomodoro'
+const PLUGIN = '@yongfanbeta/dsh-pomodoro'
 const results = []
 let failed = 0
 

@@ -18,7 +18,7 @@
 
 set -euo pipefail
 
-PLUGIN_NAME='dsh-pomodoro'
+PLUGIN_NAME='@yongfanbeta/dsh-pomodoro'
 
 # --- locate the plugin root (parent of this script's dir) --------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

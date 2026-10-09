@@ -2,4 +2,4 @@
 # The row name must match the npm package name and the host half's exported `name`.
 - insert:
     - id: pomodoro
-      name: 'dsh-pomodoro'
+      name: '@yongfanbeta/dsh-pomodoro'

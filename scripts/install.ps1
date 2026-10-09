@@ -17,7 +17,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$pluginName = 'dsh-pomodoro'
+$pluginName = '@yongfanbeta/dsh-pomodoro'
 $pluginRoot = Split-Path -Parent $PSScriptRoot
 $dshHome = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $HOME '.dsh' }
 $profilesRoot = Join-Path $dshHome 'profiles'
@@ -57,7 +57,12 @@ if (-not (Test-Path $profileJson)) {
   throw "profile '$Profile' 不存在或缺少 package.json。$profilesRoot 下可用：$available"
 }
 
-$targetDir = Join-Path $profileDir "node_modules\$pluginName"
+# Scoped names contain '/', which is valid in an npm name but must not leak as
+# a mixed-separator path on Windows. Turn the package name into a filesystem
+# path fragment (node_modules\@scope\name) while keeping $pluginName itself the
+# canonical npm name for the bundles / dependencies JSON values.
+$pluginRel = $pluginName -replace '/', '\'
+$targetDir = Join-Path $profileDir "node_modules\$pluginRel"
 
 if ($Uninstall) {
   if (Test-Path $targetDir) {

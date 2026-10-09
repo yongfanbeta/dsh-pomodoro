@@ -22,7 +22,7 @@ const profilesRoot = join(dshHome, 'profiles')
 // Resolve through the profile's own node_modules, exactly as the loader does.
 const cordisUrl = pathToFileURL(join(profilesRoot, 'node_modules', '@deepseek-ai', 'cordis', 'lib', 'index.js')).href
 const { Context } = await import(cordisUrl)
-const pluginUrl = pathToFileURL(join(profileDir, 'node_modules', 'dsh-pomodoro', 'lib', 'index.js')).href
+const pluginUrl = pathToFileURL(join(profileDir, 'node_modules', '@yongfanbeta/dsh-pomodoro', 'lib', 'index.js')).href
 const plugin = await import(pluginUrl)
 
 let failures = 0

@@ -14,7 +14,7 @@ DeepSeek Harness 番茄钟插件：经典 25/5/15 计时，可关联当前会话
 | ![计时面板](docs/screenshot-timer.png) | ![热力图](docs/screenshot-stats.png) | ![状态栏](docs/screenshot-statusbar.png) |
 -->
 
-想了解这个插件**是怎么写的**（DSH 插件的进程边界、中断记账、挂载点、装错 profile 的坑、两把自检尺），见 [插件开发总结.md](插件开发总结.md)。
+想了解这个插件**是怎么写的**（DSH 插件的进程边界、中断记账、挂载点、装错 profile 的坑、两把自检尺），见 [一行代码不写-复现DSH番茄钟.md](一行代码不写-复现DSH番茄钟.md)。
 
 ## 前置条件
 
@@ -136,7 +136,24 @@ DeepSeek Harness 番茄钟插件：经典 25/5/15 计时，可关联当前会话
 
 ## 安装
 
-插件必须先放到 DSH profile 的 `node_modules` 下，并在 profile 的 bundle 列表里登记。克隆本仓库后，在插件目录里执行对应平台的脚本：
+> npm 包名：`@yongfanbeta/dsh-pomodoro`。插件的 Cordis id / bundle 行名 / npm 包名三者必须一致，所以任何"装"的动作都用带 scope 的全名。
+
+### 路径 A（推荐）：官方 `dsh plugin` CLI
+
+DSH 自带插件安装器，从 npm 直接装：
+
+```powershell
+dsh plugin --profile web add @yongfanbeta/dsh-pomodoro
+dsh web   # 或重启桌面端 profile
+```
+
+装完左侧边栏出现 🍅 图标即生效。卸载：`dsh plugin --profile web remove @yongfanbeta/dsh-pomodoro`。
+
+> ⚠️ 若 CLI 拒绝带 `/` 的 scoped 名（DSH 版本相关），走下面的"路径 B"绕开。
+
+### 路径 B：从源码装
+
+克隆本仓库后，在插件目录里执行对应平台的脚本：
 
 ```powershell
 # Windows（PowerShell）：自动定位活动 profile 并复制
@@ -148,10 +165,10 @@ pwsh -File scripts/install.ps1
 bash scripts/install.sh
 ```
 
-两个脚本做的是同一件事：
+两个脚本做的是同一件事（scoped 路径会规范化为 `node_modules/@yongfanbeta/dsh-pomodoro`）：
 
-1. 把插件目录复制到 `<profile>/node_modules/dsh-pomodoro`。
-2. 在 `<profile>/package.json` 的 `dsh.profile.bundles` 数组末尾加入 `dsh-pomodoro`。
+1. 把插件目录复制到 `<profile>/node_modules/@yongfanbeta/dsh-pomodoro`。
+2. 在 `<profile>/package.json` 的 `dsh.profile.bundles` 数组末尾加入 `@yongfanbeta/dsh-pomodoro`，并同步写 `dependencies`，让市场"已安装"页也能看到。
 3. 打印下一步：重启 DSH（`dsh web` / 桌面端）。
 
 ### ⚠️ 装错 profile 是唯一真正会"装了却看不见"的原因
@@ -183,14 +200,14 @@ $env:DSH_PROFILE_DIR  # 其目录
     "profile": {
       "bundles": [
         // ...
-        "dsh-pomodoro"
+        "@yongfanbeta/dsh-pomodoro"
       ]
     }
   }
 }
 ```
 
-卸载：把 `dsh-pomodoro` 从 `bundles` 里删掉，并删除 `<profile>/node_modules/dsh-pomodoro`（或用 `pwsh -File scripts/install.ps1 -Profile <name> -Uninstall`）。数据文件会保留，如需清除请手动删除 `storages/pomodoro/`。
+卸载：把 `@yongfanbeta/dsh-pomodoro` 从 `bundles` 里删掉，并删除 `<profile>/node_modules/@yongfanbeta/dsh-pomodoro`（或用 `pwsh -File scripts/install.ps1 -Profile <name> -Uninstall` / `bash scripts/install.sh --uninstall`）。数据文件会保留，如需清除请手动删除 `storages/pomodoro/`。
 
 ## 使用
 
@@ -325,6 +342,36 @@ dsh-pomodoro/
 - 会话标题来自 host 的 `sessionTitle` 服务；服务不可用时退化为工作区名或目录名。
 - 数据为全局一份，不按工作区隔离（这是已确认的取舍）。
 - 导出格式为 CSV（不是 .xlsx）。如需多工作表或单元格格式，需要另行引入 xlsx 生成器。
+
+## 发布到 npm（维护者）
+
+包名是 scoped 的 `@yongfanbeta/dsh-pomodoro`。首次发布是一次性的，之后每次发版只有三步。
+
+**一次性准备**
+
+1. 在 <https://www.npmjs.com> 用 `yongfanbeta` 注册（或确认已有）账号，并**开启 Two-Factor Authentication**；publish 权限设为需要 OTP 或 trusted publisher。
+2. 本机登录：`npm login`（registry 是 `registry.npmjs.org`）。
+3. `npm profile get` 应打印 `yongfanbeta`。
+
+**每次发布**
+
+```powershell
+# 1) 先升版本号：package.json 的 "version"（0.x 期间破坏性改动升 minor，其余升 patch）
+# 2) 在 CHANGELOG.md 补一段对应版本
+# 3) 发布——prepublishOnly 钩子会先自动跑 npm test，测试不过就发不出去
+npm publish
+```
+
+`publishConfig.access` 已在 `package.json` 写成 `public`，所以 scoped 包默认就是公开的，`npm publish` 不需要额外参数。
+
+**发布后**
+
+- 打 tag：`git tag v0.1.0 && git push origin v0.1.0`，并在 GitHub 建对应 Release（写清适配的 DSH 版本）。
+- `npm view @yongfanbeta/dsh-pomodoro versions` 应能看到新版本。
+
+**⚠️ scoped 名的已知不确定点**
+
+`@scope/name` 里的斜杠，官方 `dsh plugin` CLI 与 DSH 的 bundle 解析器在不同版本上的处理不一定一致。首次发版后，**务必**在一台装了 DSH 的干净机器上实跑一次 `dsh plugin --profile web add @yongfanbeta/dsh-pomodoro` 确认加载成功；若 CLI 拒收斜杠名，把包名换成非作用域的独特名（届时 `package.json`、`cordis.patch.yml`、`lib/index.js` 的 `name`、`lib/client.js` 的 `id`、两个安装脚本与两处校验常量需同步回改，`README` 与 `check:install` 也会立刻指出没对齐的那一处）。
 
 ## 许可证
 
